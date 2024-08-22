@@ -2,5 +2,18 @@
   "projectName": "wiseapply",
   "mainHeading": "Land your dream job in record time! 🚀🚀",
   "subHeading": "Effortlessly optimize your resume with AI",
-  "continueWithLinkedIn": "Continue with LinkedIn"
+  "continueWithLinkedIn": "Continue with LinkedIn",
+  "onboarding": "onboarding",
+  "uploadResume": "Upload resume",
+  "importData": "Import data",
+  "name": "Name",
+  "namePlaceholder": "John Doe",
+  "nameError": "Please enter valid name",
+  "emailId": "Email ID",
+  "emailPlaceholder": "johndoe007@spy.uk",
+  "emailError": "Please enter valid email",
+  "linkedinUrl": "LinkedIn URL",
+  "linkedinPlaceholder": "https://www.linkedin.com/in/johndoe",
+  "otherUrls": "Other URLs",
+  "otherUrlsPlaceholder": "Enter other relevant URLs"
 }
