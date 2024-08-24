@@ -8,19 +8,23 @@ export default async function OnboardingPage() {
   const user = await getUser();
 
   return (
-    <div className="p-4">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-xl">
-          <span className="font-bold">{en.projectName}</span>
-          <span className="font-light">/{en.onboarding}</span>
-        </h1>
-        {user ? (
-          <UserAvatar user={user} />
-        ) : (
-          <div className="w-10 h-10 rounded-full bg-gray-300 animate-pulse"></div>
-        )}
+    <div className="flex flex-col h-screen">
+      <div className="sticky top-0 bg-white z-10 p-4 shadow-md">
+        <div className="flex justify-between items-center">
+          <h1 className="text-xl">
+            <span className="font-bold">{en.projectName}</span>
+            <span className="font-light">/{en.onboarding}</span>
+          </h1>
+          {user ? (
+            <UserAvatar user={user} />
+          ) : (
+            <div className="w-10 h-10 rounded-full bg-gray-300 animate-pulse"></div>
+          )}
+        </div>
       </div>
-      <OnboardingContent user={user} />
+      <div className="flex-grow overflow-y-auto p-4 scrollbar-hide">
+        <OnboardingContent user={user} />
+      </div>
     </div>
   );
 }
