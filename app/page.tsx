@@ -1,8 +1,16 @@
 import Image from 'next/image';
-import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/server";
+import { LoginLink, getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import en from '@/locales/en.json';
+import { redirect } from 'next/navigation';
 
-export default function Home() {
+export default async function Home() {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if (user) {
+    redirect('/onboarding');
+  }
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
       <Image
