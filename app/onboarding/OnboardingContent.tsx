@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import en from '@/locales/en.json';
 import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/types";
 import Button from '@/app/components/Button';
 import { RxChevronUp, RxChevronDown } from "react-icons/rx";
+import Select, { components, OptionProps, SingleValueProps } from 'react-select';
 
 interface OnboardingContentProps {
   user: KindeUser | null;
@@ -59,6 +60,106 @@ interface SkillsFormProps {
   addSkill: (skill: string) => void;
   removeSkill: (skill: string) => void;
 }
+
+interface SkillOption {
+  value: string;
+  label: string;
+}
+
+interface CustomSkillSelectProps {
+  skills: Set<string>;
+  addSkill: (skill: string) => void;
+}
+
+const CustomSkillSelect: React.FC<CustomSkillSelectProps> = ({ skills, addSkill }) => {
+  const [inputValue, setInputValue] = useState('');
+  const selectRef = useRef<HTMLDivElement>(null);
+
+  const options: SkillOption[] = Array.from(skills).map(skill => ({ value: skill, label: skill }));
+
+  const CustomOption = (props: OptionProps<SkillOption>) => (
+    <components.Option {...props}>
+      {props.data.label}
+    </components.Option>
+  );
+
+  const CustomSingleValue = (props: SingleValueProps<SkillOption>) => (
+    <components.SingleValue {...props}>
+      {props.data.label}
+    </components.SingleValue>
+  );
+
+  const handleChange = (newValue: SkillOption | null) => {
+    if (newValue) {
+      addSkill(newValue.value);
+    }
+  };
+
+  const handleInputChange = (newValue: string) => {
+    setInputValue(newValue);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' && inputValue && !skills.has(inputValue)) {
+      addSkill(inputValue);
+      setInputValue('');
+    }
+  };
+
+  const NoOptionsMessage = (props: any) => {
+    return (
+      <components.NoOptionsMessage {...props}>
+        <span className="text-gray-500">Skill not found...</span>
+        <button
+          className="ml-2 text-blue-500 hover:text-blue-700"
+          onClick={() => {
+            if (inputValue && !skills.has(inputValue)) {
+              addSkill(inputValue);
+              setInputValue('');
+            }
+          }}
+        >
+          Add
+        </button>
+      </components.NoOptionsMessage>
+    );
+  };
+
+  return (
+    <div ref={selectRef}>
+      <Select
+        options={options}
+        isMulti={false}
+        onChange={handleChange}
+        onInputChange={handleInputChange}
+        inputValue={inputValue}
+        onKeyDown={handleKeyDown}
+        components={{
+          Option: CustomOption,
+          SingleValue: CustomSingleValue,
+          NoOptionsMessage,
+        }}
+        placeholder="Add Skill"
+        isClearable
+        isSearchable
+        className="w-full"
+        styles={{
+          control: (base) => ({
+            ...base,
+            borderColor: 'black',
+            borderWidth: '2px',
+            borderRadius: '0.5rem',
+            padding: '0.25rem',
+          }),
+          menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+        }}
+        menuPlacement="auto"
+        menuPortalTarget={document.body}
+        menuPosition="fixed"
+      />
+    </div>
+  );
+};
 
 export default function OnboardingContent({ user }: OnboardingContentProps) {
   const [isLoading, setIsLoading] = useState(!user);
@@ -483,28 +584,13 @@ function SkillsForm({ skills, addSkill, removeSkill }: SkillsFormProps) {
     <div>
       <div className="flex flex-wrap gap-2 mb-4">
         {Array.from(skills).map((skill) => (
-          <span key={skill} className={`px-2 py-1 rounded text-white ${getRandomColor()}`}>
+          <span key={skill} className="px-2 py-1 rounded bg-gray-200 text-gray-800">
             {skill}
-            <button className="ml-2" onClick={() => removeSkill(skill)}>×</button>
+            <button className="ml-2 text-gray-600 hover:text-gray-800" onClick={() => removeSkill(skill)}>×</button>
           </span>
         ))}
       </div>
-      <select
-        className="w-full p-2 border rounded mb-2"
-        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => addSkill(e.target.value)}
-        value=""
-      >
-        <option value="" disabled selected>{en.keySkills}</option>
-        {Array.from(skills).map((skill) => (
-          <option key={skill} value={skill}>{skill}</option>
-        ))}
-        <option value="new">{en.addSkill}</option>
-      </select>
+      <CustomSkillSelect skills={skills} addSkill={addSkill} />
     </div>
   );
-}
-
-function getRandomColor() {
-  const colors = ['bg-red-500', 'bg-blue-500', 'bg-orange-500', 'bg-pink-500', 'bg-yellow-500', 'bg-green-500', 'bg-purple-500'];
-  return colors[Math.floor(Math.random() * colors.length)];
 }
