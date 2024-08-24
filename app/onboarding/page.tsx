@@ -2,6 +2,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import en from '@/locales/en.json';
 import OnboardingContent from './OnboardingContent';
 import UserAvatar from '../components/UserAvatar';
+import Button from '../components/Button';
 
 export default async function OnboardingPage() {
   const { getUser } = getKindeServerSession();
@@ -24,6 +25,13 @@ export default async function OnboardingPage() {
       </div>
       <div className="flex-grow overflow-y-auto p-4 scrollbar-hide">
         <OnboardingContent user={user} />
+      </div>
+      <div className="sticky bottom-0 bg-white z-10 p-4 shadow-md border border-t-gray-200">
+        <div className="flex justify-end">
+          <Button variant="proceed" className="w-fit max-w-32 min-w-28">
+            {en.continue}
+          </Button>
+        </div>
       </div>
     </div>
   );

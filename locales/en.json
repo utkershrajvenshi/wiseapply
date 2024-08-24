@@ -39,5 +39,6 @@
   "description": "Description",
   "company": "Company",
   "position": "Position",
-  "currentlyWorkingHere": "Currently working here"
+  "currentlyWorkingHere": "Currently working here",
+  "continue": "Continue"
 }

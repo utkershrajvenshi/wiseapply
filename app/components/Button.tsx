@@ -16,7 +16,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const variantClasses = {
       upload: 'bg-[#D9D9D9] bg-opacity-25 border-2 border-black',
       linkedin: 'bg-sky-500 text-white font-semibold shadow-[inset_2px_2px_4px_rgba(125,174,246,0.8),inset_-2px_-2px_4px_rgba(53,110,194,0.7)]',
-      proceed: '', // To be defined later
+      proceed: 'bg-[#32A73B] text-white font-semibold rounded-lg shadow-[inset_0_-2px_4px_rgba(137,189,141,1),inset_0_2px_4px_rgba(82,128,86,1)]',
       secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300',
       delete: 'bg-red-500 text-white hover:bg-red-600',
     };
